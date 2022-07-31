@@ -29,26 +29,27 @@ export default function UserForm () {
         e.preventDefault();
         await axios({
             method: 'post',
-            url: '',
+            url: 'http://localhost:5000/createUser',
             data: {
-                firsName: e.target.firsName.value,
+                firstName: e.target.firstName.value,
                 lastName: e.target.lastName.value,
-                quote: e.target.target.value
+                quote: e.target.quote.value
             }
         });
+        dispatch({ type: 'CLOSE_MODAL' });
     }
 
     return (
-        <Segment placeholder>
+        <Segment>
             <Grid columns={2} relaxed='very' stackable>
                 <Grid.Column>
-                    <Form>
-                        <Button onClick={() => dispatch({ type: 'OPEN_MODAL', dimmer: 'blurring' })}>
-                            Add New QR Code
-                        </Button>
-                        <Modal dimmer={dimmer} open={open} onClose={() => dispatch({ type: 'CLOSE_MODAL' })}>
-                            <Modal.Header>Add new Info:</Modal.Header>
-                            <Modal.Content>
+                    <Button onClick={() => dispatch({ type: 'OPEN_MODAL', dimmer: 'blurring' })}>
+                        Add New QR Code
+                    </Button>
+                    <Modal dimmer={dimmer} open={open} onClose={() => dispatch({ type: 'CLOSE_MODAL' })}>
+                        <Modal.Header>Add new Info:</Modal.Header>
+                        <Modal.Content>
+                            <Form onSubmit={CreateQR}>
                                 <Form.Input
                                     icon='user'
                                     iconPosition='left'
@@ -70,19 +71,20 @@ export default function UserForm () {
                                     placeholder='Miska Moska Mickey Mouse!!'
                                     name='quote'
                                 />
-                            </Modal.Content>
-                            <Modal.Actions>
-                                <Button negative onClick={() => {dispatch({ type: 'CLOSE_MODAL' }); console.log('test')}}>
-                                    Cancel
-                                </Button>
-                                <Button positive onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>
-                                    Generate
-                                </Button>
-                            </Modal.Actions>
-                        </Modal>
-                    </Form>
+                                <Modal.Actions>
+                                    <Button negative onClick={() => {
+                                        dispatch({ type: 'CLOSE_MODAL' });
+                                    }}>
+                                        Cancel
+                                    </Button>
+                                    <Button type='submit' positive >
+                                        Generate
+                                    </Button>
+                                </Modal.Actions>
+                            </Form>
+                        </Modal.Content>
+                    </Modal>
                 </Grid.Column>
-
                 <Grid.Column verticalAlign='middle'>
                     <Button content='Sign up' icon='signup' size='big'/>
                 </Grid.Column>
